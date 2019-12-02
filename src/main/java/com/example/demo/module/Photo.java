@@ -21,10 +21,11 @@ public class Photo implements Serializable{
 	public Photo() {
 		super();
 	}
-	public Photo(Long id, String path) {
+	public Photo( String path,Site site) {
 		super();
-		this.id = id;
+		
 		this.path = path;
+		this.site=site;
 	}
 	public Long getId() {
 		return id;

@@ -18,7 +18,7 @@ import com.example.demo.dao.PhotoDao;
 import com.example.demo.dao.SiteDao;
 import com.example.demo.module.Photo;
 import com.example.demo.module.Site;
-
+@RequestMapping("/sites")
 @Controller
 public class SiteController {
 	public String fileLocation = System.getProperty("user.dir")+"/uploadingDir/";
@@ -36,25 +36,28 @@ public class SiteController {
 //		return "NewFile.html";
 //	}
 
-	@GetMapping("/")
-	public String insert()
-	{
-		//sitrep.save(s);
+
+	@RequestMapping(value = "/addsite" ,method = RequestMethod.GET)
+	public String addSite(Model model) {
+		Site site=new Site();
+		File file = new File(fileLocation);
+        model.addAttribute("files", file.listFiles());
+		model.addAttribute("site",site);
 		return "NewFile";
 	}
 	
 	
-	@RequestMapping(value = "/site/addsite" ,method = RequestMethod.POST)
+	@RequestMapping(value = "/addsite" ,method = RequestMethod.POST)
 	public String addSiteform(Model model,@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles,Site site) {
 			
 		siteDao.save(site);
 			
 		for(MultipartFile uploadedFile : uploadingFiles) {
 			String filename=uploadedFile.getOriginalFilename();
-			Photo picture=new Photo(filename,site);
-            File file = new File("../var/tmp/" + filename);
+            File file = new File(fileLocation + filename);
             try {
 				uploadedFile.transferTo(file);
+				Photo picture=new Photo(filename,site);
 				photoDao.save(picture);
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -62,7 +65,7 @@ public class SiteController {
 			}
         }
 
-        return "redirect:/";
+        return "NewFile.html";
 	}
 	
 	

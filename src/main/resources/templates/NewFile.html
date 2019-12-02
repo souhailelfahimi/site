@@ -8,12 +8,12 @@
 </head>
 <body>
 
-	<form>
-		<input type="text" name="name"/>
-		<input type="text" name="description"/>
-		<input type="number" name="x"/>
-		<input type="number" name="y"/>
-		<input type="file" name="img" multiple>
+	<form  action="/sites/addsite"  method="post" enctype="multipart/form-data">
+		<input type="text" th:value="${site.nom}"  placeholder="Name" name="nom"/>
+		<input type="text" th:value="${site.description}"  placeholder="description" name="description"/>
+		<input type="number" th:value="${site.x}" name="x"/>
+		<input type="number" th:value="${site.y}"  name="y"/>
+		<input type="file" name="uploadingFiles" multiple>
 		<input type="submit" name="name"/>
 	</form>
 </body>

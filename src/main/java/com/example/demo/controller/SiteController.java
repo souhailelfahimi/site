@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,10 +53,15 @@ public class SiteController {
 	public String addSiteform(Model model,@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles,Site site) {
 			
 		siteDao.save(site);
-			
+	
 		for(MultipartFile uploadedFile : uploadingFiles) {
+			//DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+			  // LocalDateTime now = LocalDateTime.now();  
+			//String filename=uploadedFile.getOriginalFilename()+dtf.format(now);
 			String filename=uploadedFile.getOriginalFilename();
+			System.out.println(filename);
             File file = new File(fileLocation + filename);
+            
             try {
 				uploadedFile.transferTo(file);
 				Photo picture=new Photo(filename,site);

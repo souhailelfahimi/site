@@ -21,6 +21,7 @@ import com.example.demo.module.Site;
 
 @Controller
 public class SiteController {
+	public String fileLocation = System.getProperty("user.dir")+"/uploadingDir/";
 
 	@Autowired
 	public SiteDao siteDao;
@@ -51,7 +52,7 @@ public class SiteController {
 		for(MultipartFile uploadedFile : uploadingFiles) {
 			String filename=uploadedFile.getOriginalFilename();
 			Photo picture=new Photo(filename,site);
-            File file = new File("/var/tmp/" + filename);
+            File file = new File("../var/tmp/" + filename);
             try {
 				uploadedFile.transferTo(file);
 				photoDao.save(picture);

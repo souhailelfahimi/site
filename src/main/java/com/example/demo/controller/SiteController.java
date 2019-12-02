@@ -39,7 +39,7 @@ public class SiteController {
 	public String insert()
 	{
 		//sitrep.save(s);
-		return "NewFile";
+		return "index";
 	}
 	
 	

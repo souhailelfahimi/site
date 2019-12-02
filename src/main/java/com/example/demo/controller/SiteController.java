@@ -31,12 +31,8 @@ public class SiteController {
 	public PhotoDao photoDao;
 	
 	
-//	@PostMapping("/")
-//	public String insert(@RequestBody Site s)
-//	{
-//		sitrep.save(s);
-//		return "NewFile.html";
-//	}
+
+
 
 
 	@RequestMapping(value = "/addsite" ,method = RequestMethod.GET)
@@ -48,6 +44,13 @@ public class SiteController {
 		return "NewFile";
 	}
 	
+	@GetMapping("/")
+	public String insert()
+	{
+		//sitrep.save(s);
+		return "index";
+	}
+	
 	
 	@RequestMapping(value = "/addsite" ,method = RequestMethod.POST)
 	public String addSiteform(Model model,@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles,Site site) {
@@ -55,13 +58,11 @@ public class SiteController {
 		siteDao.save(site);
 	
 		for(MultipartFile uploadedFile : uploadingFiles) {
-			//DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-			  // LocalDateTime now = LocalDateTime.now();  
-			//String filename=uploadedFile.getOriginalFilename()+dtf.format(now);
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+			   LocalDateTime now = LocalDateTime.now();  
 			String filename=uploadedFile.getOriginalFilename();
 			System.out.println(filename);
-            File file = new File(fileLocation + filename);
-            
+            File file = new File(fileLocation+ dtf.format(now)+ filename);
             try {
 				uploadedFile.transferTo(file);
 				Photo picture=new Photo(filename,site);
@@ -72,7 +73,7 @@ public class SiteController {
 			}
         }
 
-        return "NewFile.html";
+        return "index";
 	}
 	
 	

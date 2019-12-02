@@ -16,12 +16,7 @@ public class SiteController {
 	@Autowired
 	public SiteDao sitrep;
 	
-	@GetMapping("/message")
-	public String hello()
-	{
-		
-			return "salamamamamma";
-	}
+	
 	@PostMapping("/")
 	public int insert(@RequestBody Site s)
 	{
@@ -30,5 +25,27 @@ public class SiteController {
 	}
 
 	
+	
+//	@RequestMapping(value = "/site/addsite" ,method = RequestMethod.POST)
+//	public String addSiteform(Model model,@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles,Site site) {
+//			
+//		siterepository.save(site);
+//			
+//		for(MultipartFile uploadedFile : uploadingFiles) {
+//			String filename=uploadedFile.getOriginalFilename();
+//			Picture picture=new Picture(filename,site);
+//            File file = new File(fileLocation + filename);
+//            try {
+//				uploadedFile.transferTo(file);
+//				picturerepository.save(picture);
+//			}catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//        }
+//
+//        return "redirect:/";
+//	}
+//	
 	
 }

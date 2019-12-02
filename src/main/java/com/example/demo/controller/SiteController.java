@@ -17,13 +17,19 @@ public class SiteController {
 	public SiteDao sitrep;
 	
 	
-	@PostMapping("/")
-	public int insert(@RequestBody Site s)
-	{
-		sitrep.save(s);
-		return 1;
-	}
+//	@PostMapping("/")
+//	public String insert(@RequestBody Site s)
+//	{
+//		sitrep.save(s);
+//		return "NewFile.html";
+//	}
 
+	@GetMapping("/")
+	public String insert()
+	{
+		//sitrep.save(s);
+		return "NewFile.html";
+	}
 	
 	
 //	@RequestMapping(value = "/site/addsite" ,method = RequestMethod.POST)
@@ -46,6 +52,6 @@ public class SiteController {
 //
 //        return "redirect:/";
 //	}
-//	
+	
 	
 }

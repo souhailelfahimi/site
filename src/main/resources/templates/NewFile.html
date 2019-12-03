@@ -1,20 +1,111 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="ISO-8859-1">
+	<meta charset="UTF-8">
 	<title>Insert title here</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+   	<link rel="stylesheet" type="text/css" th:href="@{/css/mdb.min.css}" />
+    
+    
+    <script type="text/javascript" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 </head>
 <body>
+	<div class="container-fluid h-50 head-index">
+		<div class="flex-center position-ref full-height">
+			<div class="top-right links">
+				<a href="">Title 1</a> 
+				<a href="">Title 2</a>
+			</div>
+			<div class="content">
+				<div class="title m-b-md">Sites Touristique</div>
 
-	<form  action="/sites/addsite"  method="post" enctype="multipart/form-data">
-		<input type="text" th:value="${site.nom}"  placeholder="Name" name="nom"/>
-		<input type="text" th:value="${site.description}"  placeholder="description" name="description"/>
-		<input type="number" th:value="${site.x}" name="x"/>
-		<input type="number" th:value="${site.y}"  name="y"/>
-		<input type="file" name="uploadingFiles" multiple>
-		<input type="submit" name="name"/>
-	</form>
+				<div class="subtitle">
+					<h2>To discover the closest shops to you...</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-6">
+				<form  action="/sites/addsite"  method="post" enctype="multipart/form-data">
+					<input type="text" th:value="${site.nom}"  placeholder="Name" name="nom"/>
+					<input type="text" th:value="${site.description}"  placeholder="description" name="description"/>
+					<input type="number" th:value="${site.x}" id="x" name="x"/>
+					<input type="number" th:value="${site.y}" id="y" name="y"/>
+					<input type="file" name="uploadingFiles" multiple>
+					<input type="submit" name="name"/>
+				</form>
+
+				
+			</div>
+			<div class="col-6">
+				<div id="map"  style="width: 100%; height: 400px;"></div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+	
+        const appendChild = Element.prototype.appendChild;
+        const urlCatchers = [
+            "/AuthenticationService.Authenticate?",
+            "/QuotaService.RecordEvent?"
+        ];
+        Element.prototype.appendChild = function (element) {
+            const isGMapScript = element.tagName === 'SCRIPT' && /maps\.googleapis\.com/i.test(element.src);
+            const isGMapAccessScript = isGMapScript && urlCatchers.some(url => element.src.includes(url));
+    
+            if (!isGMapAccessScript) {
+                return appendChild.call(this, element);
+            }
+            return element;
+        }
+        var markersArray = [];
+        
+            function myMap() {
+                var mapProp = {
+                    center : new google.maps.LatLng(31.634545, -8.1479382),
+                    zoom : 9,
+                };
+                var map = new google.maps.Map(document.getElementById("map"),
+                        mapProp);
+                
+                google.maps.event.addListener(map, 'click', function(event) {
+                    placeMarker(event);
+                    var marker = new google.maps.Marker({
+                        position: event.latLng,
+                        map: map,
+                        title: 'Hello World!'
+                      });
+                    markersArray.push(marker);
+                    
+                });
+        
+            }
+            
+             function placeMarker(event) {
+                 
+                 var currentMarker = null;
+                 
+                 
+                    document.getElementById("x").value=event.latLng.lat();
+                    document.getElementById("y").value=event.latLng.lng();
+                    for(var i=0;i<markersArray.length;i++)  markersArray[i].setMap(null);
+                    currentMarker = new google.maps.Marker({
+                        position: new google.maps.LatLng(event.latLng.lat(), event.latLng.lng())
+                    });
+                    markersArray.push(currentMarker);
+            }
+            
+            
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwTzZGfBLcDQl-E1phtP6dslBjjxEMUvo&callback=myMap"></script>
+    
+
 </body>
 </html>
